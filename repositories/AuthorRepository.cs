@@ -81,7 +81,7 @@ namespace LibraryManagement.repositories
             int bioIndex = reader.GetOrdinal("bibliography");
 
             return new Author(
-                reader.GetInt32("id"),
+                reader.GetInt32("idAuthor"),
                 reader.GetString("name"),
                 reader.IsDBNull(bioIndex) ? null : reader.GetString("bibliography")
             )

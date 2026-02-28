@@ -17,6 +17,7 @@ namespace LibraryManagement.repositories
         {
             var books = new List<Book>();
             using var connection = _context.CreerConnection();
+            
             using var cmd = new MySqlCommand("SELECT * FROM book", connection);
             using var reader = cmd.ExecuteReader();
 
@@ -87,7 +88,7 @@ namespace LibraryManagement.repositories
         private Book MapBook(MySqlDataReader reader)
         {
             return new Book(
-                reader.GetInt32("id"),
+                reader.GetInt32("idBook"),
                 reader.GetString("title"),
                 reader.GetString("isbn"),
                 reader.GetInt32("year_publication"), 
@@ -95,10 +96,7 @@ namespace LibraryManagement.repositories
                 reader.IsDBNull(reader.GetOrdinal("description"))
                     ? null 
                     : reader.GetString("description")
-            )
-            {
-                Id = reader.GetInt32("idBook")
-            };
+            );
         }
     }
 }

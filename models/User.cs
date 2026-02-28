@@ -15,7 +15,7 @@ namespace LibraryManagement.models
 
         public string PasswordHash { get; set; } = null!;
 
-        public string Role { get; set; }
+        public string? Role { get; set; }
 
         public string Status { get; set; }
 
@@ -32,6 +32,9 @@ namespace LibraryManagement.models
             Status = status;
             Loans = new List<Loan>();
         }    
-
+        public User() 
+        { 
+            Loans = new List<Loan>();
+        }
     }
 }

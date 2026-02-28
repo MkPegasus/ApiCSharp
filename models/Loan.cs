@@ -33,5 +33,8 @@ public class Loan
            
            
         }
+        public Loan()
+        {
+        }
 }
 }

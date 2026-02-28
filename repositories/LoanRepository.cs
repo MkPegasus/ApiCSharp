@@ -17,7 +17,7 @@ namespace LibraryManagement.repositories
         {
             var loans = new List<Loan>();
             using var connection = _context.CreerConnection();
-            using var cmd = new MySqlCommand("SELECT * FROM loan", connection);
+            using var cmd = new MySqlCommand("SELECT * FROM loans", connection);
             using var reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -29,7 +29,7 @@ namespace LibraryManagement.repositories
         public Loan? GetById(int id)
         {
             using var connection = _context.CreerConnection();
-            using var cmd = new MySqlCommand("SELECT * FROM loan WHERE id = @id", connection);
+            using var cmd = new MySqlCommand("SELECT * FROM loans WHERE id = @id", connection);
             cmd.Parameters.AddWithValue("@id", id);
             using var reader = cmd.ExecuteReader();
 
@@ -39,26 +39,26 @@ namespace LibraryManagement.repositories
             return null;
         }
 
-        public void Add(Loan loan)
+        public void Add(Loan loans)
         {
             using var connection = _context.CreerConnection();
             using var cmd = new MySqlCommand(
-                @"INSERT INTO loan (user_id, idCopy, checkout_date, due_date) 
+                @"INSERT INTO loans (user_id, idCopy, checkout_date, due_date) 
                   VALUES (@userId, @copyId, @checkoutDate, @dueDate)", connection);
 
-            cmd.Parameters.AddWithValue("@userId", loan.UserId);
-            cmd.Parameters.AddWithValue("@copyId", loan.CopyId);
-            cmd.Parameters.AddWithValue("@checkoutDate", loan.CheckoutDate);
-            cmd.Parameters.AddWithValue("@dueDate", loan.DueDate);
+            cmd.Parameters.AddWithValue("@userId", loans.UserId);
+            cmd.Parameters.AddWithValue("@copyId", loans.CopyId);
+            cmd.Parameters.AddWithValue("@checkoutDate", loans.CheckoutDate);
+            cmd.Parameters.AddWithValue("@dueDate", loans.DueDate);
 
             cmd.ExecuteNonQuery();
         }
 
-        public void Update(Loan loan)
+        public void Update(Loan loans)
         {
             using var connection = _context.CreerConnection();
             using var cmd = new MySqlCommand(
-                @"UPDATE loan SET 
+                @"UPDATE loans SET 
                     user_id = @userId, 
                     idCopy = @copyId, 
                     checkout_date = @checkoutDate, 
@@ -66,12 +66,12 @@ namespace LibraryManagement.repositories
                     return_date = @returnDate 
                   WHERE id = @id", connection);
 
-            cmd.Parameters.AddWithValue("@id", loan.Id);
-            cmd.Parameters.AddWithValue("@userId", loan.UserId);
-            cmd.Parameters.AddWithValue("@copyId", loan.CopyId);
-            cmd.Parameters.AddWithValue("@checkoutDate", loan.CheckoutDate);
-            cmd.Parameters.AddWithValue("@dueDate", loan.DueDate);
-            cmd.Parameters.AddWithValue("@returnDate", loan.ReturnDate ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@id", loans.Id);
+            cmd.Parameters.AddWithValue("@userId", loans.UserId);
+            cmd.Parameters.AddWithValue("@copyId", loans.CopyId);
+            cmd.Parameters.AddWithValue("@checkoutDate", loans.CheckoutDate);
+            cmd.Parameters.AddWithValue("@dueDate", loans.DueDate);
+            cmd.Parameters.AddWithValue("@returnDate", loans.ReturnDate ?? (object)DBNull.Value);
 
             cmd.ExecuteNonQuery();
         }
@@ -79,7 +79,7 @@ namespace LibraryManagement.repositories
         public void Delete(int id)
         {
             using var connection = _context.CreerConnection();
-            using var cmd = new MySqlCommand("DELETE FROM loan WHERE id = @id", connection);
+            using var cmd = new MySqlCommand("DELETE FROM loans WHERE id = @id", connection);
             cmd.Parameters.AddWithValue("@id", id);
             cmd.ExecuteNonQuery();
         }
@@ -88,7 +88,7 @@ namespace LibraryManagement.repositories
         {
             int returnDateIndex = reader.GetOrdinal("return_date");
 
-            var loan = new Loan(
+            var loans = new Loan(
                 reader.GetInt32("id"),
                 reader.GetInt32("user_id"),
                 reader.GetInt32("idCopy"),
@@ -96,11 +96,11 @@ namespace LibraryManagement.repositories
                 reader.GetDateTime("due_date")
             );
 
-            loan.ReturnDate = reader.IsDBNull(returnDateIndex) 
+            loans.ReturnDate = reader.IsDBNull(returnDateIndex) 
                 ? null 
                 : reader.GetDateTime("return_date");
 
-            return loan;
+            return loans;
         }
     }
 }

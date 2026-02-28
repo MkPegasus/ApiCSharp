@@ -30,8 +30,6 @@ namespace LibraryManagement.repositories
             //utilisation de la méthode CreerConnection du contexte de données pour créer une connexion à la base de données,
 
             using var conn = dbContext.CreerConnection();
-            //puis ouverture de la connexion,
-            conn.Open();
             //exécution d'une commande SQL pour sélectionner tous les utilisateurs,
             var command = new MySqlCommand("SELECT * FROM users", conn);
             //et lecture des résultats pour remplir la liste des utilisateurs avant de la retourner.
@@ -56,7 +54,6 @@ namespace LibraryManagement.repositories
         public User? GetUserById(int id)
         {
             using var conn = dbContext.CreerConnection();
-            conn.Open();
             var command = new MySqlCommand("SELECT * FROM users WHERE id = @id", conn);
             command.Parameters.AddWithValue("@id", id);
             using var reader = command.ExecuteReader();
@@ -79,7 +76,6 @@ namespace LibraryManagement.repositories
         public void AddUser(User user)
         {
             using var conn = dbContext.CreerConnection();
-            conn.Open();
             var command = new MySqlCommand("INSERT INTO users(name, email, password_hash, role, status) VALUES (@name, @email, @password, @role, @status)", conn);
             command.Parameters.AddWithValue("@name", user.Name);
             command.Parameters.AddWithValue("@email", user.Email);
@@ -93,7 +89,6 @@ namespace LibraryManagement.repositories
         public void UpdateUser(User user)
         {
             using var conn = dbContext.CreerConnection();
-            conn.Open();
             var command = new MySqlCommand("UPDATE users SET name = @name, email = @email, password_hash = @password, role = @role, status = @status WHERE id = @id", conn);
             command.Parameters.AddWithValue("@name", user.Name);
             command.Parameters.AddWithValue("@email", user.Email);
@@ -108,7 +103,6 @@ namespace LibraryManagement.repositories
         public void DeleteUser(int id)
         {
             using var conn = dbContext.CreerConnection();
-            conn.Open();
             var command = new MySqlCommand("DELETE FROM users WHERE id = @id", conn);
             command.Parameters.AddWithValue("@id", id);
             command.ExecuteNonQuery();

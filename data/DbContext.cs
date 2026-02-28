@@ -14,7 +14,10 @@ namespace LibraryManagement.data
         //definition d'une méthode pour créer une nouvelle connexion à la base de données en utilisant la chaine de connexion définie précédement
         public MySqlConnection CreerConnection()
         {
-            return new MySqlConnection(connectionString);
+
+            var connection = new MySqlConnection(connectionString);
+            connection.Open(); // ← ouvrir directement ici
+            return connection;
         }
     }
 }

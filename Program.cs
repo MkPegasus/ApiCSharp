@@ -21,11 +21,12 @@ namespace LibraryManagement
             var authorRepository  = new AuthorRepository(dbContext);
             var copyRepository    = new BookCopyRepository(dbContext);
             var loanRepository    = new LoanRepository(dbContext);
-
+            var userRepository    = new UserRepository(dbContext);
             var bookService    = new BookService(bookRepository);
             var authorService  = new AuthorService(authorRepository);
             var copyService    = new BookCopyService(copyRepository);
             var loanService    = new LoanService(loanRepository, copyRepository);
+            var userService    = new UserService(userRepository);
 
             // Liste de tous les contrôleurs à enregistrer dans le routeur
             var controllers = new object[]
@@ -33,7 +34,8 @@ namespace LibraryManagement
                 new BookController(bookService),
                 new AuthorController(authorService),
                 new BookCopyController(copyService),
-                new LoanController(loanService)
+                new LoanController(loanService),
+                new UserController(userService)
             };
 
             // ─────────────────────────────────────────
@@ -112,7 +114,12 @@ namespace LibraryManagement
                                 !routeParams.ContainsKey(p.Name!));
 
                             if (bodyParamInfo != null)
-                                bodyParam = JsonSerializer.Deserialize(body, bodyParamInfo.ParameterType);
+                               // Par celle-ci
+                                bodyParam = JsonSerializer.Deserialize(body, bodyParamInfo.ParameterType, 
+                                    new JsonSerializerOptions 
+                                    { 
+                                        PropertyNameCaseInsensitive = true // ← accepte passwordHash, PasswordHash, passwordhash...
+                                    });
                         }
 
                         // Construire la liste des arguments à passer à la méthode
@@ -121,8 +128,18 @@ namespace LibraryManagement
                         {
                             if (routeParams.TryGetValue(param.Name!, out string? routeVal))
                             {
-                                // Convertir le paramètre de route vers le bon type (int, string...)
-                                args2.Add(Convert.ChangeType(routeVal, param.ParameterType));
+                                if (param.ParameterType == typeof(int))
+                                {
+                                    // TryParse au lieu de ChangeType pour éviter le crash
+                                    if (int.TryParse(routeVal, out int intVal))
+                                        args2.Add(intVal);
+                                    else
+                                        args2.Add(0); // valeur par défaut si conversion échoue
+                                }
+                                else
+                                {
+                                    args2.Add(Convert.ChangeType(routeVal, param.ParameterType));
+                                }
                             }
                             else
                             {
