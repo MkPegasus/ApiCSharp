@@ -23,8 +23,9 @@ public class Loan
     public BookCopy Copy { get; set; } = null!;
 
     /* Définition du constructeur personnalisé */
-    public Loan(int userId, int copyId, DateTime checkedOutDate, DateTime dueDate)
+    public Loan(int id, int userId, int copyId, DateTime checkedOutDate, DateTime dueDate)
         {
+            Id = id;
             UserId = userId;
             CopyId = copyId;
             CheckoutDate = checkedOutDate;

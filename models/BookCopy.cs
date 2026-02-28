@@ -15,8 +15,9 @@ namespace LibraryManagement.models
 
         /* Définition du constructeur avec paramètres */
 
-        public BookCopy(string barcode, string status, Book book)
+        public BookCopy(int id, string barcode, string status, Book book)
         {
+            Id = id;
             Barcode = barcode;
             Status = status;
             Book = book;

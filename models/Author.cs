@@ -11,8 +11,9 @@ namespace LibraryManagement.models
         public string? Biography{get; set;}
 
         /* Définition du constructeur personnalisé */
-        public Author(string name, string? biography )
+        public Author(int id,string name, string? biography )
         {
+            Id = id;
             Name = name;
             Biography = biography;
         }

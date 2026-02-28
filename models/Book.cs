@@ -6,7 +6,7 @@ namespace LibraryManagement.models
     public class Book
     {
         /* Définition des attribut ainsi que leur getter et setter */
-        public int Id{get; set;}
+        public int? Id{get; set;}
         public string Title{get; set;}
         public string Isbn{get; set;}
         public int Year{get; set;}
@@ -19,8 +19,9 @@ namespace LibraryManagement.models
         public List<BookCopy> BookCopies{get; set;}
 
         /* Définition du constructeur */
-        public Book(string title, string isbn, int year, string description)
+        public Book(int? id,string title, string isbn, int year, string? description)
         {
+            Id = id;
             Title = title;
             Isbn = isbn;
             Year = year;

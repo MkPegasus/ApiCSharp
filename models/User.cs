@@ -5,6 +5,7 @@ namespace LibraryManagement.models
     /// </summary>
     public class User
     {
+
         /* Définition des attributs */
         public int Id { get; set; }
 
@@ -21,15 +22,16 @@ namespace LibraryManagement.models
         public List<Loan> Loans { get; set; } = null!;
 
         /* Définition du constructeur personnalisé */
-        public User(string name, string email, string passwordHash, string role, string status)
+        public User(int id, string name, string email, string passwordHash, string role, string status)
         {
+            Id = id;
             Name = name;
             Email = email;
             PasswordHash = passwordHash;
             Role = role;
             Status = status;
             Loans = new List<Loan>();
-        }   
+        }    
 
     }
 }
