@@ -17,7 +17,7 @@ namespace LibraryManagement.models
 
         public string? Role { get; set; }
 
-        public string Status { get; set; }
+        public string? Status { get; set; }
 
         public List<Loan> Loans { get; set; } = null!;
 

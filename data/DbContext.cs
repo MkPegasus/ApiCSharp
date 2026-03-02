@@ -16,7 +16,7 @@ namespace LibraryManagement.data
         {
 
             var connection = new MySqlConnection(connectionString);
-            connection.Open(); // ← ouvrir directement ici
+            connection.Open();
             return connection;
         }
     }
